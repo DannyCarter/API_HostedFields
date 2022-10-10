@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<div class="container">
+
+    <form action="/transaction" method="post" id="payment-form">
+
+        <div class="row">
+
+            <div class="col">
+
+                 <!-- create transaction  -->
+                <h3 class="title">Customer Info</h3>
+
+                <div class="inputBox">
+                    <span>Total Amount:</span>
+                    <input type="number" id="totalAmount" placeholder="amount" required>
+                </div>
+
+                <div class="inputBox">
+                    <span>First Name</span>
+                    <input type="text" id="first-name" placeholder="first name" required>
+                </div>
+
+                <div class="inputBox">
+                    <span>Last Name</span>
+                    <input type="text" id="last-name" placeholder="last name" required>
+                </div>
+
+                <div class="inputBox">
+                    <span>Email</span>
+                    <input type="text" id="email" placeholder="example@exa.com" required>
+                </div>
+
+
+
+                </div>
+
+            </div>
+
+            <div class="col">
+
+                <h3 class="title">Payment Info</h3>
+
+                <div class="inputBox">
+                    <span>credit card number :</span>
+                    <input type="number" id="#card-number" placeholder="1111-2222-3333-4444">
+                </div>
+
+                <div class="inputBox">
+                    <span>cards accepted :</span>
+                    <img src="images/card_img.png" alt="">
+                </div>
+
+
+                <div class="inputBox">
+                    <span>exp month :</span>
+                    <input type="text" id="exp-date" placeholder="07/2023" required>
+                </div>
+
+
+                    <div class="inputBox">
+                        <span>cvv :</span>
+                        <input type="text" id="cvv" placeholder="123" required>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <input type="submit" value="proceed to checkout" class="submit-btn">
+
+        <div>
+           <input id= 'nonce' name= 'payment_method_nonce' type='hidden' />
+         </div>
+
+    </form>
+
+</div>
+
+<script src="https://js.braintreegateway.com/web/3.87.0/js/client.min.js"></script>
+<script src="https://js.braintreegateway.com/web/3.87.0/js/hosted-fields.min.js"></script>
+  <script>
+
+    var clientToken = ('clientToken');
+    var form = document.querySelector('#payment-form');
+    var submit = document.querySelector('input[type="submit"]');
+    var hiddenNonceInput = document.querySelector('#nonce');
+
+    braintree.client.create({
+      authorization: 'CLIENT_AUTHORIZATION'
+    }, function (clientErr, clientInstance) {
+      if (clientErr) {
+        console.error(clientErr);
+        return;
+      }
+
+      //Hosted Fields
+      braintree.hostedFields.create({
+        client: clientInstance,
+        styles: {
+          'input': {
+            'font-size': '14px'
+          },
+          'input.invalid': {
+            'color': 'red'
+          },
+          'input.valid': {
+            'color': 'green'
+          }
+        },
+        fields: {
+          number: {
+            container: '#card-number',
+            placeholder: '1111-2222-3333-4444'
+          },
+          cvv: {
+            container: '#cvv',
+            placeholder: '123'
+          },
+          expirationDate: {
+            container: '#exp-date',
+            placeholder: '/2022'
+          }
+        }
+      }, function (hostedFieldsErr, hostedFieldsInstance) {
+        if (hostedFieldsErr) {
+          console.error(hostedFieldsErr);
+          return;
+        }
+
+        submit.removeAttribute('disabled');
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+            if (tokenizeErr) {
+              console.error(tokenizeErr);
+              return;
+            }
+
+            // send the nonce to your server.
+            submit.removeAttribute('disabled');
+       form.addEventListener('submit', function (event) {
+       event.preventDefault();
+       hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+         if (tokenizeErr) {
+           console.error(tokenizeErr);
+           alert(tokenizeErr.code)
+         } else
+             hiddenNonceInput.value = payload.nonce;
+
+            console.log('Got a nonce: ' + payload.nonce);
+          });
+        }, false);
+      });
+    });
+  </script>
+
+</body>
+</html>
