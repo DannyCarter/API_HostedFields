@@ -1,0 +1,22 @@
+<%- include('./partials/header') %>
+
+    <section class="checkout">
+        <h1>
+            <%= result.status %>
+        </h1>
+
+        <h3>
+            <%=result.symbol%>
+        </h3>
+
+        <h3>
+            <%= result.message %>
+        </h3>
+
+        <a href="/">Another Transaction?</a>
+
+        <label for="transaction"></label>
+        <a href="/transactions"><button <%- result.success ? '' : 'hidden' %> id="transactions">Past Transactions - 90 days</button></a>
+    </section>
+
+    <%- include('./partials/footer') %>

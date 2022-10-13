@@ -1,0 +1,51 @@
+<%- include('./partials/header') %>
+
+    <section class="transactions">
+        <h1>Transctions Page</h1>
+
+
+        <% if (query.length) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Payment Method</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% query.forEach(function(transaction) { %>
+                        <tr>
+                            <td>
+                                <%= transaction.transactionId %>
+                            </td>
+                            <td>
+                                <%= transaction.amount %>
+                            </td>
+                            <td>
+                                <%= transaction.type %>
+                            </td>
+                            <td>
+                                <%= transaction.status %>
+                            </td>
+                            <td>
+                                <%= transaction.method %>
+                            </td>
+                            <td>
+                                <%= transaction.date %>
+                            </td>
+                        </tr>
+                    </h3>
+                    <% }); %>
+                    <h3>Total Transactions: <%= query.length %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <h5>Transactions View</h5>
+                <% } %>
+    </section>
+
+    <%- include('./partials/footer') %>

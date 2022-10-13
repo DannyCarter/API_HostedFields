@@ -1,0 +1,61 @@
+<%- include('./partials/header') %>
+
+  <div class="container">
+
+    <form action="/" method="POST" id="payment-form">
+
+      <div class="row">
+        <div class="col">
+
+          <h3 class="title">Payment Info</h3>
+
+          <div class="inputBox">
+            <span>Total Amount:</span>
+            <input name="amount" type="number" id="totalAmount" placeholder="Amount" required>
+          </div>
+
+        </div>
+
+      </div>
+
+      <section class="col">
+
+        <label for="card-number">credit card number :</label>
+        <div name="payment" id="card-number"></div>
+
+
+        <label for="expiration-date">exp date :</label>
+        <div name="exp" type="text" id="expiration-date" required></div>
+
+        <label for="cvv">CVV :</label>
+        <div name="cvv" type="text" id="cvv" required></div>
+
+        <label for="postal-code">postal code :</label>
+        <div name="postal" type="text" id="postal-code" required></div>
+
+        <label id="payments-accepted">payments accepted :</label>
+        <img id="payments-accepted" src="images/card_img.png" alt="accepted credit cards">
+      </section>
+
+      <button type="submit" class="submit-btn">PROCEED TO CHECKOUT</button>
+  </div>
+
+  </div>
+
+
+  <div>
+    <input id='nonce' name='payment_method_nonce' type='hidden' />
+    <span hidden id="client-token">
+      <%= token %>
+    </span>
+  </div>
+
+  </form>
+
+  </div>
+
+  <script src="https://js.braintreegateway.com/web/3.87.0/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.87.0/js/hosted-fields.min.js"></script>
+  <script type="application/javascript" src="../javascript/hostedFields.js"></script>
+
+  <%- include('./partials/footer') %>
