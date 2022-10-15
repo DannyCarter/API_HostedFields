@@ -24,10 +24,13 @@ function createResultObject(status) {
 	}
 	return result;
 }
-
+//clientToken
 function index(req, res) {
 	gateway.clientToken.generate({}, (err, response) => {
+		//console.log(response, "Response", response.clientToken)
 		const clientToken = response.clientToken;
+		console.log(response, "Response", response.clientToken);
+		console.log("Hello");
 		res.render("index", { token: clientToken });
 	});
 }
@@ -94,7 +97,7 @@ async function transactions(req, res) {
 		},
 		(err, results) => {
 			if (err) console.error(`Did not find any transactions: ${err}`);
-			const obj = results.each(async (err, transactions) => {
+			results.each(async (err, transactions) => {
 				if (err) console.error(err);
 				resultObj = {
 					transactionId: transactions.id,
@@ -106,8 +109,13 @@ async function transactions(req, res) {
 					date: transactions.createdAt.split("T")[0],
 				};
 				await query.push(resultObj);
-				res.render("show", { query: query });
 			});
 		}
 	);
+	const checkSearch = () => {
+		setTimeout(function () {
+			res.render("transactions", { query: query });
+		}, 5000);
+	};
+	checkSearch();
 }
