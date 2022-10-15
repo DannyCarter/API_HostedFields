@@ -9,14 +9,14 @@ module.exports = {
 function createResultObject(status) {
 	if (status) {
 		result = {
-			status: "Sweet Success!",
+			outcome: "Sweet Success!",
 			symbol: "＼（＾０＾）ノ",
 			message: "Your transaction has been successfully processed!",
 			success: true,
 		};
 	} else {
 		result = {
-			status: "Transaction Failed",
+			outcome: "Transaction Failed",
 			symbol: "😖",
 			message: `Your transaction was unsuccessful. Please provide another payment method and try again.`,
 			success: false,
@@ -29,20 +29,21 @@ function index(req, res) {
 	gateway.clientToken.generate({}, (err, response) => {
 		//console.log(response, "Response", response.clientToken)
 		const clientToken = response.clientToken;
-		console.log(response, "Response", response.clientToken);
-		console.log("Hello");
+		console.log(response, "Response", response.success);
 		res.render("index", { token: clientToken });
 	});
 }
 
 async function submitForm(req, res) {
 	//destructring assignment of object to request body properties
+	//linked to the index.js form
 	const { amount, payment_method_nonce: paymentMethodNonce } = req.body;
 
-	await gateway.customer
-		.create({
+	await gateway.customer.create({
+			//using paymentMethodNonce
 			paymentMethodNonce,
 			creditCard: {
+				//verifying card
 				options: {
 					verifyCard: true,
 				},
@@ -51,25 +52,28 @@ async function submitForm(req, res) {
 		.then((status) => {
 			console.log(status.customer.paymentMethods[0].token);
 			console.log(status.success);
+			//if(true) create valid result obj
 			if (status) {
-				settlement = {
+				lifeCycleStatus = {
+					//HTML > function
 					settlement: createResultObject(status.success),
 					token: status.customer.paymentMethods[0].token,
 				};
 			} else {
 				console.error(status);
-				settlement = {
+				lifeCycleStatus = {
 					settlement: createResultObject(!status.success),
 				};
-				res.render("checkout", { settlement: settlement.settlement });
+				res.render("checkout", { settlement: lifeCycleStatus.settlement });
 			}
 		});
 
-	await gateway.transaction
-		.sale({
+	await gateway.transaction.sale({
+			//create transaction using paymentMethodToken
 			amount,
-			paymentMethodToken: settlement.token,
+			paymentMethodToken: lifeCycleStatus.token,
 			options: {
+				//storing in vault
 				submitForSettlement: true,
 				storeInVaultOnSuccess: true,
 			},
@@ -77,21 +81,24 @@ async function submitForm(req, res) {
 		.then((result) => {
 			if (result.success) {
 				console.log(result.success);
-				res.render("checkout", { settlement: settlement.settlement });
+				res.render("checkout", { settlement: lifeCycleStatus.settlement });
 			} else {
 				console.error(result);
-				res.render("checkout", { settlement: settlement.settlement });
+				res.render("checkout", { settlement: lifeCycleStatus.settlement });
 			}
 		});
 }
 
+//transctions.ejs
 async function transactions(req, res) {
 	const today = new Date();
 	const timeframe = new Date();
 	timeframe.setDate(today.getDate() - 90);
+	//[empty obj]
 	const query = [];
 
 	await gateway.transaction.search(
+		//req search of txns based on timeframe
 		(search) => {
 			search.createdAt().min(timeframe);
 		},
@@ -108,10 +115,12 @@ async function transactions(req, res) {
 					method: transactions.creditCard.cardType,
 					date: transactions.createdAt.split("T")[0],
 				};
+				//push obj into query arr
 				await query.push(resultObj);
 			});
 		}
 	);
+	//set Timeout to wait for data to render 
 	const checkSearch = () => {
 		setTimeout(function () {
 			res.render("transactions", { query: query });
