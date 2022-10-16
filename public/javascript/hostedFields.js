@@ -4,6 +4,8 @@
     var form = document.querySelector('#payment-form');
     var hiddenNonceInput = document.querySelector('#nonce');
 
+    console.log("Test", braintree)
+
     braintree.client.create({
         authorization: clientToken
     },
