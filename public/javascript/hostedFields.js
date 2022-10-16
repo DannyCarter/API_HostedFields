@@ -2,7 +2,7 @@
 	var clientToken = document.getElementById("client-token").innerText;
 	var form = document.querySelector("#payment-form");
 	var hiddenNonceInput = document.querySelector("#nonce");
-	var sumbit = document.querySelector('button[type="submit"]');
+	var submit = document.querySelector('button[type="submit"]');
 
 	console.log("Test", braintree);
 
