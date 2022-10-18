@@ -35,6 +35,10 @@
 							container: "#card-number",
 							placeholder: " 1111-2222-3333-4444",
 						},
+						cardholderName: {
+							container: "#cardholder-name",
+							placeholder: " Jane Doe",
+						  },
 						cvv: {
 							container: "#cvv",
 							placeholder: " 123",
