@@ -37,9 +37,14 @@ function index(req, res) {
 async function submitForm(req, res) {
 	//destructring assignment of object to request body properties
 	//linked to the index.js form
-	const { amount, payment_method_nonce: paymentMethodNonce } = req.body;
+	const {
+		amount,
+		payment_method_nonce: paymentMethodNonce,
+		cardholderName,
+	} = req.body;
 
-	await gateway.customer.create({
+	await gateway.customer
+		.create({
 			//using paymentMethodNonce
 			paymentMethodNonce,
 			creditCard: {
@@ -68,7 +73,8 @@ async function submitForm(req, res) {
 			}
 		});
 
-	await gateway.transaction.sale({
+	await gateway.transaction
+		.sale({
 			//create transaction using paymentMethodToken
 			amount,
 			paymentMethodToken: lifeCycleStatus.token,
@@ -106,11 +112,13 @@ async function transactions(req, res) {
 			if (err) console.error(`Did not find any transactions: ${err}`);
 			results.each(async (err, transactions) => {
 				if (err) console.error(err);
+				console.log(transactions.creditCard.cardholderName);
 				resultObj = {
 					transactionId: transactions.id,
 					type: transactions.type,
 					status: transactions.status,
 					amount: transactions.amount,
+					cardholderName: transactions.creditCard.cardholderName,
 					customer: transactions.customer.id,
 					method: transactions.creditCard.cardType,
 					date: transactions.createdAt.split("T")[0],
@@ -120,7 +128,7 @@ async function transactions(req, res) {
 			});
 		}
 	);
-	//set Timeout to wait for data to render 
+	//set Timeout to wait for data to render
 	const checkSearch = () => {
 		setTimeout(function () {
 			res.render("transactions", { query: query });

@@ -38,7 +38,7 @@
 						cardholderName: {
 							container: "#cardholder-name",
 							placeholder: " Jane Doe",
-						  },
+						},
 						cvv: {
 							container: "#cvv",
 							placeholder: " 123",
