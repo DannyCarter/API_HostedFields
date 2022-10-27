@@ -33,18 +33,13 @@ function index(req, res) {
 		res.render("index", { token: clientToken });
 	});
 }
-
+cardholderName
 async function submitForm(req, res) {
 	//destructring assignment of object to request body properties
 	//linked to the index.js form
-	const {
-		amount,
-		payment_method_nonce: paymentMethodNonce,
-		cardholderName,
-	} = req.body;
+	const {amount, payment_method_nonce: paymentMethodNonce, cardholderName,} = req.body;
 
-	await gateway.customer
-		.create({
+	await gateway.customer.create({
 			//using paymentMethodNonce
 			paymentMethodNonce,
 			creditCard: {
@@ -73,8 +68,7 @@ async function submitForm(req, res) {
 			}
 		});
 
-	await gateway.transaction
-		.sale({
+	await gateway.transaction.sale({
 			//create transaction using paymentMethodToken
 			amount,
 			paymentMethodToken: lifeCycleStatus.token,

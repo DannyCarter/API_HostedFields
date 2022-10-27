@@ -24,7 +24,7 @@
 							"font-size": "14px",
 						},
 						"input.invalid": {
-							color: "red",
+							color: "red",payment_method_nonce
 						},
 						"input.valid": {
 							color: "green",
@@ -53,17 +53,18 @@
 						},
 					},
 				},
+				
 				function (hostedFieldsErr, hostedFieldsInstance) {
 					if (hostedFieldsErr) {
 						console.error(hostedFieldsErr);
 						return;
 					}
 					submit.removeAttribute("disabled");
-					form.addEventListener(
-						"submit",
+					form.addEventListener("submit",
 						function (event) {
 							event.preventDefault();
 
+							//payload obj(concept), sending or receiving success from a function or request
 							hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
 								if (tokenizeErr) {
 									console.error(tokenizeErr);
