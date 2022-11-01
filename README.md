@@ -16,3 +16,15 @@ Once you've confirmed you hae Node use the following steps to run the applicatio
 3. In the terminal, be sure you're in the project folder and run ```node server.js``` to start the server.
 
 4. In your web browser, visit ```localhost:3000``` to view the application
+
+## Creating a Transaction
+
+Once the server is running you'll be presented with a ```Payment Form```, which uses [Hosted Fields](https://developer.paypal.com/braintree/docs/guides/hosted-fields/overview).
+
+Fill in the form with your information and use card number ```4111 1111 1111 1111``` 
+
+Once you've completed the form, click ```SUBMIT HERE``` and you'll be presented with a page that will tell you if your transaction attempt was successful or not. 
+
+## Display the last 90 days of transactions
+
+Once you've reached the next page you're also presented with the option to create another transaction or display of the last ```90 days of transactions```
