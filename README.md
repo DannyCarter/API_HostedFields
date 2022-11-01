@@ -15,7 +15,10 @@ Once you've confirmed you hae Node use the following steps to run the applicatio
 
 3. In the terminal, be sure you're in the project folder and run ```node server.js``` to start the server.
 
-4. In your web browser, visit ```localhost:3000``` to view the application
+4. In your web browser, visit the following PORT to view the application
+```
+localhost:3000
+```
 
 ## Creating a Transaction
 
