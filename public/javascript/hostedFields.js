@@ -24,7 +24,7 @@
 							"font-size": "14px",
 						},
 						"input.invalid": {
-							color: "red",payment_method_nonce
+							color: "red",
 						},
 						"input.valid": {
 							color: "green",
