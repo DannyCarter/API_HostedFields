@@ -30,4 +30,4 @@ Once you've completed the form, click ```SUBMIT HERE``` and you'll be presented 
 
 ## Display the last 90 days of transactions
 
-Once you've reached the next page you're also presented with the option to create another transaction or display of the last ```90 days of transactions```
+Once you've reached the next page you're also presented with the option to create ```another transaction``` or display of the last ```90 days of transactions```
