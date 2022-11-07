@@ -13,7 +13,7 @@
 				console.error(clientErr, "err");
 				return;
 			}
-			//(properties)objs -> options
+			//(properties)objs -> options.
 			braintree.hostedFields.create(
 				{
 					client: clientInstance,
