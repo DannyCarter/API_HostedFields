@@ -26,7 +26,7 @@ localhost:3000
 
 Once the server is running you'll be presented with a `Payment Form`, which uses [Hosted Fields](https://developer.paypal.com/braintree/docs/guides/hosted-fields/overview).
 
-Fill out the form with your desired information and use card number `4111 1111 1111 1111`
+Fill out the form with your desired information and use card number `4012000077777777`
 
 Once you've completed the form, click `SUBMIT HERE` and you'll be presented with a page that will tell you if your transaction attempt was successful or not.
 
