@@ -37,8 +37,7 @@ function index(req, res) {
 async function submitForm(req, res) {
 	const { amount, payment_method_nonce: paymentMethodNonce } = req.body;
 	try {
-		await gateway.customer
-			.create({
+		await gateway.customer.create({
 				paymentMethodNonce,
 				creditCard: {
 					options: {
@@ -61,8 +60,7 @@ async function submitForm(req, res) {
 						res.render("checkout", { settlement: settlement });
 				}
 			});
-		await gateway.transaction
-			.sale({
+		await gateway.transaction.sale({
 				amount,
 				paymentMethodToken: settlement.token,
 				options: {
