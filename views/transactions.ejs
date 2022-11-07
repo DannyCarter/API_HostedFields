@@ -3,7 +3,6 @@
     <section class="transactions">
         <h1>Transctions Page</h1>
 
-
         <% if (query.length) { %>
             <table>
                 <thead>
@@ -13,7 +12,6 @@
                         <th>Type</th>
                         <th>Status</th>
                         <th>Payment Method</th>
-                        <th>Customer Name</th>
                         <th>Date</th>
                     </tr>
                 </thead>
@@ -36,15 +34,13 @@
                                 <%= transaction.method %>
                             </td>
                             <td>
-                                <%= transaction.cardholderName %>
-                            </td>
-                            <td>
                                 <%= transaction.date %>
                             </td>
                         </tr>
                     </h3>
                     <% }); %>
                     <h3>Total Transactions: <%= query.length %>
+                    <h2> <button> <a href="/">Another Transaction?</a> </button> </h2> 
                 </tbody>
             </table>
             <% } else { %>

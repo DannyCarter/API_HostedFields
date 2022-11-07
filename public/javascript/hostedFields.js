@@ -4,8 +4,6 @@
 	var hiddenNonceInput = document.querySelector("#nonce");
 	var submit = document.querySelector('button[type="submit"]');
 
-	console.log("Test", braintree);
-
 	braintree.client.create(
 		{
 			authorization: clientToken,
@@ -35,10 +33,6 @@
 							container: "#card-number",
 							placeholder: " 1111-2222-3333-4444",
 						},
-						cardholderName: {
-							container: "#cardholder-name",
-							placeholder: " Jane Doe",
-						},
 						cvv: {
 							container: "#cvv",
 							placeholder: " 123",
@@ -50,7 +44,7 @@
 						postalCode: {
 							container: "#postal-code",
 							placeholder: " 90210",
-						},
+						}
 					},
 				},
 				
@@ -67,7 +61,7 @@
 							//payload obj(concept), sending or receiving success from a function or request
 							hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
 								if (tokenizeErr) {
-									console.error(tokenizeErr);
+									console.log(tokenizeErr);
 									alert(tokenizeErr.code);
 									return;
 								}

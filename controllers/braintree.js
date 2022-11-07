@@ -35,64 +35,53 @@ function index(req, res) {
 }
 
 async function submitForm(req, res) {
-	//destructring assignment of object to request body properties
-	//linked to the index.js form
-	const {
-		amount,
-		payment_method_nonce: paymentMethodNonce,
-		cardholderName,
-	} = req.body;
-
-	await gateway.customer
-		.create({
-			//using paymentMethodNonce
-			paymentMethodNonce,
-			creditCard: {
-				//verifying card
-				options: {
-					verifyCard: true,
+	const { amount, payment_method_nonce: paymentMethodNonce } = req.body;
+	try {
+		await gateway.customer
+			.create({
+				paymentMethodNonce,
+				creditCard: {
+					options: {
+						verifyCard: true,
+					},
 				},
-			},
-		})
-		.then((status) => {
-			console.log(status.customer.paymentMethods[0].token);
-			console.log(status.success);
-			//if(true) create valid result obj
-			if (status) {
-				lifeCycleStatus = {
-					//HTML > function
-					settlement: createResultObject(status.success),
-					token: status.customer.paymentMethods[0].token,
-				};
-			} else {
-				console.error(status);
-				lifeCycleStatus = {
-					settlement: createResultObject(!status.success),
-				};
-				res.render("checkout", { settlement: lifeCycleStatus.settlement });
-			}
-		});
-
-	await gateway.transaction
-		.sale({
-			//create transaction using paymentMethodToken
-			amount,
-			paymentMethodToken: lifeCycleStatus.token,
-			options: {
-				//storing in vault
-				submitForSettlement: true,
-				storeInVaultOnSuccess: true,
-			},
-		})
-		.then((result) => {
-			if (result.success) {
-				console.log(result.success);
-				res.render("checkout", { settlement: lifeCycleStatus.settlement });
-			} else {
-				console.error(result);
-				res.render("checkout", { settlement: lifeCycleStatus.settlement });
-			}
-		});
+			})
+			.then((status) => {
+				if (status.success) {
+					console.log(status.success);
+					settlement = {
+						response: createResultObject(status.success),
+						token: status.customer.paymentMethods[0].token,
+					};
+				} else {
+					console.log(status);
+					const creditCardErrors = status.errors.deepErrors();
+					console.log(creditCardErrors, "this is where the error happened");
+					(settlement = createResultObject(status.success)),
+						res.render("checkout", { settlement: settlement });
+				}
+			});
+		await gateway.transaction
+			.sale({
+				amount,
+				paymentMethodToken: settlement.token,
+				options: {
+					submitForSettlement: true,
+					storeInVaultOnSuccess: true,
+				},
+			})
+			.then((result) => {
+				if (result.success) {
+					console.log(result.success);
+					res.render("checkout", { settlement: settlement.response });
+				} else {
+					console.error(result);
+					res.render("checkout", { settlement: settlement.response });
+				}
+			});
+	} catch (err) {
+		console.error(err);
+	}
 }
 
 //transctions.ejs
@@ -112,13 +101,11 @@ async function transactions(req, res) {
 			if (err) console.error(`Did not find any transactions: ${err}`);
 			results.each(async (err, transactions) => {
 				if (err) console.error(err);
-				console.log(transactions.creditCard.cardholderName);
 				resultObj = {
 					transactionId: transactions.id,
 					type: transactions.type,
 					status: transactions.status,
 					amount: transactions.amount,
-					cardholderName: transactions.creditCard.cardholderName,
 					customer: transactions.customer.id,
 					method: transactions.creditCard.cardType,
 					date: transactions.createdAt.split("T")[0],
