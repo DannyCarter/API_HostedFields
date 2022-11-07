@@ -8,7 +8,7 @@ If you do have it downloded use ` node -v` in your terminal to double check.
 
 ## Running the appliation
 
-Once you've confirmed you hae Node use the following steps to run the application.
+Once you've confirmed you have Node use the following steps to run the application.
 
 1. Using the terminal, navigate to the project folder and run ` npm install`, this will install all required packages.
 
@@ -26,13 +26,15 @@ localhost:3000
 
 Once the server is running you'll be presented with a `Payment Form`, which uses [Hosted Fields](https://developer.paypal.com/braintree/docs/guides/hosted-fields/overview).
 
-Fill in the form with your information and use card number `4111 1111 1111 1111`
+Fill out the form with your desired information and use card number `4111 1111 1111 1111`
 
 Once you've completed the form, click `SUBMIT HERE` and you'll be presented with a page that will tell you if your transaction attempt was successful or not.
 
 ## Display the last 90 days of transactions
 
-Once you've reached the next page you're also presented with the option to create `another transaction` or display the last `90 days of transactions`
+Once you've reached the page that informs you of the transaction's status you're also presented with the option to create `another transaction` or display the last `90 days of transactions`
+
+If you choose to display the last `90 days of transactions` you'll also be given the option to create `another transaction`.
 
 ## Testing
 
